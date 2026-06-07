@@ -22,13 +22,27 @@ Capitulo6.h es el header real de la semana 6. Incluye directamente todos los mó
 
 **2. ¿Qué ventaja tiene `constexpr` frente a macros?**
 `constexpr` crea funciones reales con tipo, alcance y comprobacion para errores en tiempo de compilacion mientras que los macros son simple texto reemplazado antes de compilar. `constexpr` es mas seguro, mas mantenible y ofrece el mismo rendimiento esperado que un macro
-
-
 **3. ¿Qué caso borde aparece cuando el nodo tiene solo hijo izquierdo?**
 **4. ¿Qué condición identifica una hoja en la representación implícita?**
 **5. ¿Qué cambió en `percolateDown` después de usar las fuciones auxiliares?**
 
 
 
-### Bloque 4 
-### Bloque 5 
+### Bloque 5
+Para todo nodo en el árbol, la prioridad del nodo es mayor o igual a la prioridad de sus hijos.
+
+Por transitividad. Si A >= B y B >= C, entonces A >= C. Si cada padre cumple la regla con sus hijos inmediatos, toda la jerarquía está garantizada.
+
+Por la transitividad explicada anteriormente, comparar exhaustivamente sería redundante y costoso (O(n^2)).
+
+Costo O(n), ya que itera linealmente el arreglo una sola vez, realizando como máximo dos comparaciones por nodo.
+
+Útil en pruebas para detectar bugs en modificaciones, pero inaceptable en producción porque validar el invariante cuesta O(n), arruinando el beneficio asintótico de las operaciones del heap que cuestan O(log n).
+
+
+
+
+
+
+
+
