@@ -3,3 +3,4 @@
 - Estructuracion inicial de la PC3, ajuste de la estructura general y rutas de repositorio.
 
 - Agregar el archivo CmakeLists.txt de la PC3
+- Continuación del análisis del problema para la codificación de la solución.
