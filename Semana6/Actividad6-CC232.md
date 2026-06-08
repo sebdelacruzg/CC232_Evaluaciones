@@ -29,15 +29,28 @@ Capitulo6.h es el header real de la semana 6. Incluye directamente todos los mó
 
 
 ### Bloque 5
-Para todo nodo en el árbol, la prioridad del nodo es mayor o igual a la prioridad de sus hijos.
 
-Por transitividad. Si A >= B y B >= C, entonces A >= C. Si cada padre cumple la regla con sus hijos inmediatos, toda la jerarquía está garantizada.
+```
+template <class T, class Compare>
+bool complHeapIsValid(const std::vector<T>& a, std::size_t i, Compare comp) {
+    if (i >= a.size()) return true;
+    std::size_t l = pqLeftChild(i);
+    std::size_t r = pqRightChild(i);
+    if (l < a.size() && comp(a[i], a[l])) return false;
+    if (r < a.size() && comp(a[i], a[r])) return false;
+    return complHeapIsValid(a, l, comp) && complHeapIsValid(a, r, comp);
+}
+```
 
-Por la transitividad explicada anteriormente, comparar exhaustivamente sería redundante y costoso (O(n^2)).
+1. Para todo nodo en el árbol, la prioridad del nodo es mayor o igual a la prioridad de sus hijos.
 
-Costo O(n), ya que itera linealmente el arreglo una sola vez, realizando como máximo dos comparaciones por nodo.
+2. Por transitividad. Si A >= B y B >= C, entonces A >= C. Si cada padre cumple la regla con sus hijos inmediatos, toda la jerarquía está garantizada.
 
-Útil en pruebas para detectar bugs en modificaciones, pero inaceptable en producción porque validar el invariante cuesta O(n), arruinando el beneficio asintótico de las operaciones del heap que cuestan O(log n).
+3. Por la transitividad explicada anteriormente, comparar exhaustivamente sería redundante y costoso (O(n^2)).
+
+4. Costo O(n), ya que itera linealmente el arreglo una sola vez, realizando como máximo dos comparaciones por nodo.
+
+5. Útil en pruebas para detectar bugs en modificaciones, pero inaceptable en producción porque validar el invariante cuesta O(n), arruinando el beneficio asintótico de las operaciones del heap que cuestan O(log n).
 
 
 
