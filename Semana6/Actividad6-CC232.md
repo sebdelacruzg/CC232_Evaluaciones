@@ -45,6 +45,42 @@ std::size_t complHeapPercolateDown(std::vector<T>& a, std::size_t n, std::size_t
 
 Complejidad: La complejidad se mantiene intacta. El compilador aplica inline sobre estas funciones pequeñas, traduciéndolas al mismo código máquina (operaciones aritméticas y saltos condicionales) de la versión original.
 
+### Bloque 3
+```
+template<class T, class Compare>
+std::size_t complHeapPercolateUpCount(std::vector<T>& a, std::size_t i, Compare comp) {
+  std::size_t swaps = 0;
+  while (pqHasParent(i)) {
+    const std::size_t p = pqParent(i);
+    if (!comp(a[p], a[i])) break;
+    std::swap(a[p], a[i]);
+    i = p;
+    swaps++;
+  }
+  return swaps;
+}
+```
+Salida del demo creado:
+```
+insert(40) | swaps: 0 | heap: [40] | isHeap: true
+insert(10) | swaps: 0 | heap: [40, 10] | isHeap: true
+insert(70) | swaps: 1 | heap: [70, 10, 40] | isHeap: true
+insert(30) | swaps: 1 | heap: [70, 30, 40, 10] | isHeap: true
+insert(90) | swaps: 2 | heap: [90, 70, 40, 10, 30] | isHeap: true
+insert(20) | swaps: 0 | heap: [90, 70, 40, 10, 30, 20] | isHeap: true
+insert(80) | swaps: 1 | heap: [90, 70, 80, 10, 30, 20, 40] | isHeap: true
+insert(60) | swaps: 1 | heap: [90, 70, 80, 60, 30, 20, 40, 10] | isHeap: true
+```
+
+1. Cuando el nodo insertado tiene una prioridad menor o igual que su padre inmediato, o al inicializar la raíz del heap.
+
+2. Al insertar un elemento que se convierte en el nuevo máximo global y escala todos los niveles hasta la raíz.
+
+3. La altura del heap es O(logn); el nivel donde se engancha la hoja limita físicamente la cantidad máxima de intercambios ascendentes.
+
+4. Porque la propiedad de heap exige un ordenamiento jerárquico parcial de arriba a abajo, pero no define ninguna relación de orden horizontal entre hermanos del mismo nivel.
+
+5. Se garantiza la forma de árbol binario completo y el orden de dominancia del elemento máximo ubicado en la raíz.
 
 
 ### Bloque 5
