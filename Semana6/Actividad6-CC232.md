@@ -11,14 +11,39 @@
 
 ### Bloque 2 
 
-**1. ¿Por qué conviene expresar `parent`, `left`, `right` y pruebas de frontera como funciones pequeñas?**
+```cpp
+inline constexpr bool pqHasLeftChild(std::size_t i, std::size_t n) noexcept { return 2 * i + 1 < n; }
+inline constexpr bool pqHasRightChild(std::size_t i, std::size_t n) noexcept { return 2 * i + 2 < n; }
+inline constexpr bool pqIsLeaf(std::size_t i, std::size_t n) noexcept { return !pqHasLeftChild(i, n); }
+inline constexpr bool pqIsInternal(std::size_t i, std::size_t n) noexcept { return pqHasLeftChild(i, n); }
+```
+```
+template <class T, class Compare>
+std::size_t complHeapPercolateDown(std::vector<T>& a, std::size_t n, std::size_t i, Compare comp) {
+  while (pqHasLeftChild(i, n)) { 
+    std::size_t c = pqLeftChild(i);
+    if (pqHasRightChild(i, n) && comp(a[c], a[pqRightChild(i)])) {
+      c = pqRightChild(i);
+    }
+    if (!comp(a[i], a[c])) break;
+    std::swap(a[i], a[c]);
+    i = c;
+  }
+  return i;
+}
 
+```
+1. Encapsulan las operaciones aritméticas de los índices (2i+1), previenen errores de escritura y vuelven el código autodescriptivo.
 
-**2. ¿Qué ventaja tiene `constexpr` frente a macros?**
-`constexpr` crea funciones reales con tipo, alcance y comprobacion para errores en tiempo de compilacion mientras que los macros son simple texto reemplazado antes de compilar. `constexpr` es mas seguro, mas mantenible y ofrece el mismo rendimiento esperado que un macro
-**3. ¿Qué caso borde aparece cuando el nodo tiene solo hijo izquierdo?**
-**4. ¿Qué condición identifica una hoja en la representación implícita?**
-**5. ¿Qué cambió en `percolateDown` después de usar las fuciones auxiliares?**
+2. constexpr asegura la evaluación en tiempo de compilación y ofrece seguridad de tipos (type safety), superando las macros de C que hacen sustitución de texto descontrolada.
+
+3. Se omite la comparación entre hermanos y se evalúa el intercambio directamente contra el único hijo izquierdo transitable.
+
+4. Que la proyección matemática de su hijo izquierdo caiga fuera de los límites del arreglo (2i+1 >= n).
+
+5. Se sustituyó pqInHeap por pqHasLeftChild y pqHasRightChild, mejorando la semántica.
+
+Complejidad: La complejidad se mantiene intacta. El compilador aplica inline sobre estas funciones pequeñas, traduciéndolas al mismo código máquina (operaciones aritméticas y saltos condicionales) de la versión original.
 
 
 
