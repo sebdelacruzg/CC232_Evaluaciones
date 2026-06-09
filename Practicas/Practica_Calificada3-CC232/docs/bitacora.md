@@ -10,3 +10,8 @@
 - Definicion de la estructura NodoSkewHeap y separacion de la API (skew_heap.h) de la implementacion (.cpp).
 - Creacion del esqueleto de las funciones de reversion para armar la logica.
 - Continuación del análisis del problema para el seguimiento de la codificación de la solución.
+
+2026-06-09:
+- Implementacion de la logica matematica para desarmar el Skew Heap en src/skew_heap.cpp.
+- Se aplico el concepto de Un-Swap iterativo, subiendo por los punteros al padre (`tree[curr].P`) para mantener la complejidad asintotica amortizada.
+- La extraccion ahora prioriza la "left spine" basandose firmemente en el invariante del merge.
