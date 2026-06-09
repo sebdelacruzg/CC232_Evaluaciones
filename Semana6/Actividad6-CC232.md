@@ -82,6 +82,57 @@ insert(60) | swaps: 1 | heap: [90, 70, 80, 60, 30, 20, 40, 10] | isHeap: true
 
 5. Se garantiza la forma de árbol binario completo y el orden de dominancia del elemento máximo ubicado en la raíz.
 
+### Bloque 4
+```cpp
+template<class T, class Compare>
+std::size_t complHeapPercolateDownCount(std::vector<T>& a, std::size_t n, std::size_t i, Compare comp) {
+  std::size_t swaps = 0;
+  while (pqHasLeftChild(i, n)) {
+    std::size_t c = pqLeftChild(i);
+    if (pqHasRightChild(i, n) && comp(a[c], a[pqRightChild(i)])) {
+      c = pqRightChild(i);
+    }
+    if (!comp(a[i], a[c])) break;
+    std::swap(a[i], a[c]);
+    i = c;
+    swaps++;
+  }
+  return swaps;
+}
+```
+Salida del demo creado:
+```
+delMax() -> 90
+Antes de reparar: [10, 70, 80, 60, 30, 20, 40]
+Swaps: 2
+Despues de reparar: [80, 70, 40, 60, 30, 20, 10]
+
+delMax() -> 80
+Antes de reparar: [10, 70, 40, 60, 30, 20]
+Swaps: 2
+Despues de reparar: [70, 60, 40, 10, 30, 20]
+```
+Trazado manual de una eliminación extraccion de 90:
+```
+Se extrae 90 y se mueve el último elemento (10) a la raíz.
+Estado temporal: [10, 70, 80, 60, 30, 20, 40].
+10 compara con sus hijos 70 y 80. El mayor es 80. Se intercambian.
+Nuevo estado: [80, 70, 10, 60, 30, 20, 40].
+10 compara con sus nuevos hijos 20 y 40. El mayor es 40. Se intercambian.
+Estado final: [80, 70, 40, 60, 30, 20, 10]. Nodos estables.
+```
+
+1. Para mantener la propiedad estructural de árbol binario completo, asegurando que el arreglo no tenga huecos.
+
+2. Porque el nodo que se subió a la raíz proviene del nivel más profundo (baja prioridad) debe "hundirse" hasta recuperar su posición de dominancia.
+
+3. SSe evalúan ambos hijos y se selecciona estrictamente al que tenga la mayor prioridad para subirlo, evitando violar la propiedad de heap entre hermanos.
+
+4. Se omite la comparación entre hermanos y se evalúa el intercambio directamente contra el hijo izquierdo.
+
+5. Porque el nodo desciende un nivel por cada intercambio y la altura de un árbol completo está matemáticamente acotada por O(log n).
+
+
 
 ### Bloque 5
 
