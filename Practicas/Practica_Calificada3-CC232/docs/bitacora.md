@@ -7,3 +7,4 @@
 
 2026-06-08:
 - Lectura sobre la teoria de merge en Skew Heaps.
+- Definicion de la estructura NodoSkewHeap y separacion de la API (skew_heap.h) de la implementacion (.cpp).
