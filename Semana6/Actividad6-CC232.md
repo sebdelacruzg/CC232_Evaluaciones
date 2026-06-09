@@ -1,19 +1,13 @@
 ## Actividad 6
 ### Bloque 1
-**1. ¿Qué targets de demostraciones o pruebas aparecen para Semana 6?**
-
-**2. ¿Qué archivos se incluyen desde `Capitulo6.h`?**
-* Capitulo10.h
-
-**3. ¿Qué diferencia práctica hay entre `Capitulo6.h` y `Capitulo10.h`?**
-Capitulo6.h es el header real de la semana 6. Incluye directamente todos los módulos de la semana. Mientras que el Capitulo10.h es un alias de compatibilidad solo reexporta el Capitulo6.h 
-
-
-**4. ¿Qué partes de Semana 6 dependen conceptualmente de Semana 5?**
-**5. ¿Qué estructura se usa para prioridad pura?**
-**6. ¿Qué estructura se usa para búsqueda ordenada?**
-**7. ¿Qué estructura mezcla búsqueda ordenada con prioridad?**
-**8. ¿Qué evidencia inicial obtuviste al ejecutar las pruebas sin modificar nada?.**
+1. 9 demos (como heapsort, huffman, treap y demas) y 2 pruebas de validación (`test_public` e `internal`).
+2. La interfaz `PQ`, las implementaciones de heaps (`ComplHeap` y `LeftHeap`), `heapSort`, `Huffman` y `Treap`.
+3. `Capitulo6.h` agrupa y expone el código real; `Capitulo10.h` es solo un alias de compatibilidad con la numeración del libro de Deng.
+4. El `Treap` y las estructuras enlazadas, que reutilizan la base de `BinaryTree` y `BinarySearchTree` de la Semana 5.
+5. `PQ_ComplHeap` (implícito) y `PQ_LeftHeap` (enlazado).
+6. `BinarySearchTree`.
+7. `Treap` (Clave = BST, Prioridad = Heap).
+8. Éxito en el `ctest`, confirmando la validez y estabilidad de la lógica base antes de cualquier modificación.
 
 ### Bloque 2 
 
