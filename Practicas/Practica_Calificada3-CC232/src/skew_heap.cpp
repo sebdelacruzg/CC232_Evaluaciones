@@ -47,5 +47,27 @@ int revertir_insercion_skew_heap(vector<NodoSkewHeap>& arbol, int nodo_extraido,
 }
 
 vector<int> reconstruir_permutacion(const vector<NodoSkewHeap>& arbol_inicial, int numero_nodos, bool maximizar) {
-    return {};
+    vector<NodoSkewHeap> arbol_trabajo = arbol_inicial;
+    int raiz_actual = (numero_nodos > 0) ? 1 : 0; 
+    vector<int> permutacion_revertida;
+    for (int i = 0; i < numero_nodos; ++i) {
+        vector<int> candidatos = encontrar_candidatos_insercion(arbol_trabajo, raiz_actual);
+        if (candidatos.empty()) return {};
+        int nodo_elegido;
+        if (maximizar) {
+            nodo_elegido = candidatos[0];
+            for (int c : candidatos) {
+                if (c > nodo_elegido) nodo_elegido = c;
+            }
+        } else {
+            nodo_elegido = candidatos[0];
+            for (int c : candidatos) {
+                if (c < nodo_elegido) nodo_elegido = c;
+            }
+        }
+        permutacion_revertida.push_back(nodo_elegido);
+        raiz_actual = revertir_insercion_skew_heap(arbol_trabajo, nodo_elegido, raiz_actual);
+    }
+    reverse(permutacion_revertida.begin(), permutacion_revertida.end());
+    return permutacion_revertida;
 }
