@@ -27,7 +27,23 @@ vector<int> encontrar_candidatos_insercion(const vector<NodoSkewHeap>& arbol, in
 }
 
 int revertir_insercion_skew_heap(vector<NodoSkewHeap>& arbol, int nodo_extraido, int raiz_actual) {
-    return 0;
+    int hijo_izquierdo_promovido = arbol[nodo_extraido].izquierdo;
+    int padre_nodo_extraido = arbol[nodo_extraido].padre;
+    int nueva_raiz = raiz_actual;
+    if (padre_nodo_extraido == 0) {
+        nueva_raiz = hijo_izquierdo_promovido;
+        if (hijo_izquierdo_promovido != 0) arbol[hijo_izquierdo_promovido].padre = 0;
+    } else {
+        arbol[padre_nodo_extraido].izquierdo = hijo_izquierdo_promovido;
+        if (hijo_izquierdo_promovido != 0) arbol[hijo_izquierdo_promovido].padre = padre_nodo_extraido;
+    }
+    arbol[nodo_extraido].izquierdo = arbol[nodo_extraido].derecho = arbol[nodo_extraido].padre = 0;
+    int actual = padre_nodo_extraido;
+    while (actual != 0) {
+        swap(arbol[actual].izquierdo, arbol[actual].derecho);
+        actual = arbol[actual].padre;
+    }
+    return nueva_raiz;
 }
 
 vector<int> reconstruir_permutacion(const vector<NodoSkewHeap>& arbol_inicial, int numero_nodos, bool maximizar) {
