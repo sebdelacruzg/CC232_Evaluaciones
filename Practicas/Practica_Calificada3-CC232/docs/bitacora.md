@@ -15,3 +15,4 @@
 - Implementacion de la logica matematica para desarmar el Skew Heap en src/skew_heap.cpp.
 - Se aplico el concepto de Un-Swap iterativo, subiendo por los punteros al padre (`tree[curr].P`) para mantener la complejidad asintotica amortizada.
 - La extraccion ahora prioriza la "left spine" basandose firmemente en el invariante del merge.
+- Integracion del modulo principal en src/main.cpp. Se implemento lectura rapida (Fast I/O) para manejar la carga de N nodos eficientemente y formatear la salida segun los estandares del problema.
