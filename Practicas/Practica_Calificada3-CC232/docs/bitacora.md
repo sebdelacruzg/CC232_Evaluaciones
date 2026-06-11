@@ -27,3 +27,7 @@
 - Implementacion de trazas basicas en consola para verificar el swap incondicional de los punteros durante el merge.
 - Integracion de CTest en CMakeLists.txt.
 - Incorporacion de pruebas propias  (caso minimo N=1 y test asilado del invariante principal).
+
+2026-06-11:
+- Elaboración del documento docs/respuestas_obligatorias.md completando el cuestionario de preguntas comunes y las 3 preguntas técnicas de la Sección 12.8 específicas para Skew Heaps.
+- Redacción final del README del repositorio siguiendo la plantilla de la Sección 14 de la rúbrica oficial.
