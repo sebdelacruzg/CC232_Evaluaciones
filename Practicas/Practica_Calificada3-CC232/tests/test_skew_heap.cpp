@@ -53,11 +53,36 @@ void test_sample_3() {
     cout << "Sample 3 verificado.\n";
 }
 
+void test_caso_minimo() {
+    int n = 1;
+    vector<NodoSkewHeap> arbol(n + 1);
+    // Un solo nodo, sin hijos
+    arbol[1].izquierdo = 0; arbol[1].derecho = 0;
+    
+    vector<int> min_p = reconstruir_permutacion(arbol, n, true);
+    assert(!min_p.empty() && min_p[0] == 1);
+    cout << "Caso minimo (N=1) verificado.\n";
+}
+
+void test_invariante_propio() {
+    vector<NodoSkewHeap> arbol(4);
+    // Forzamos un invariante manual: 1 -> L:2 -> L:3
+    arbol[1].izquierdo = 2; arbol[2].padre = 1;
+    arbol[2].izquierdo = 3; arbol[3].padre = 2;
+
+    vector<int> candidatos = encontrar_candidatos_insercion(arbol, 1);
+    assert(!candidatos.empty());
+    assert(candidatos[0] == 1); 
+    cout << "Invariante principal (Left Spine) verificado con prueba propia.\n";
+}
+
 int main() {
     cout << "Iniciando pruebas completas...\n";
     test_sample_1();
     test_sample_2();
     test_sample_3();
+    test_caso_minimo();
+    test_invariante_propio();
     cout << "Todos los casos validados exitosamente.\n";
     return 0;
 }
