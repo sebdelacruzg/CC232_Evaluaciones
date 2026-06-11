@@ -283,3 +283,153 @@ out[u->symbol] = prefix.empty() ? "0" : prefix;
 5. Anula la ambigüedad en la decodificación continua impidiendo que rutas numéricas de bits se traslapen a lo largo del árbol.
 6. Altereación visual/lateral de elementos empatados generando variaciones asimétricas de códigos equivalentes sin corromper la funcionalidad.
 7. Las matemáticas ponderadas se rigen por la distancia de descenso (nivel de profundidad), manteniéndose invariables ante traslaciones horizontales de empate.
+
+### Bloque 10
+### Parte A 
+
+Secuencia `{(50,50),(30,30),(70,70),(20,20),(40,40),(60,60),(80,80)}`:
+
+Observación clave: en esta implementación la prioridad menor sube a la raíz (min-heap por prioridad). Con prioridades clave=prioridad, el elemento 20 tiene la menor prioridad y sube a la raíz.
+
+```
+Salida final del árbol:
+│                       ┌── 80|p=80
+│                   ┌── 70|p=70
+│               ┌── 60|p=60
+│           ┌── 50|p=50
+│       ┌── 40|p=40
+│   ┌── 30|p=30
+└── 20|p=20
+
+inorder: [20,30,40,50,60,70,80]  ← siempre ordenado
+```
+
+Después de 5 inserciones:
+
+| Insert(clave,prio) | inorder | lvlorder | raíz | isBST | isHeap | isTreap |
+|---|---|---|---|---|---|---|
+| (50,50) | [50] | [50] | 50 | true | true | true |
+| (30,30) | [30,50] | [30,50] | 30 | true | true | true |
+| (70,70) | [30,50,70] | [30,50,70] | 30 | true | true | true |
+| (20,20) | [20,30,50,70] | [20,30,50,70] | 20 | true | true | true |
+| (40,40) | [20,30,40,50,70] | [20,30,40,50,70] | 20 | true | true | true |
+
+
+1. La propiedad BST (orden de claves) se preserva en toda rotación local. Las rotaciones solo mueven nodos pero conservan el recorrido inorden.
+
+
+2. Porque la raíz debe tener la menor prioridad (en esta implementación). Cuando se inserta un nodo con prioridad menor a la raíz actual, `bubbleUp` lo sube mediante rotaciones hasta desplazarlo a la raíz.
+
+
+3. El nodo recién insertado. `bubbleUp` rota con su padre mientras el padre tenga prioridad mayor que el nodo actual.
+
+4. El orden inorden (BST). Una rotación local solo cambia quién es padre de quién entre dos nodos adyacentes, sin alterar la relación de orden entre claves menores, el nodo, y claves mayores.
+
+5. La propiedad de min-heap por prioridad: todo padre debe tener prioridad menor o igual a sus hijos.
+
+### Parte B 
+
+```cpp
+std::size_t bubbleUpCount(Node* u) {
+  std::size_t rots = 0;
+  while (u->parent && u->parent->priority > u->priority) {
+    if (u->isRightChild()) rotateLeft(u->parent);
+    else rotateRight(u->parent);
+    ++rots;
+  }
+  if (!u->parent) root_ = u;
+  return rots;
+}
+```
+
+Secuencia `{(100,100),(90,90),(80,80),(70,70),(60,60)}`:
+
+| Clave | Prio | Rotaciones | Raíz |
+|---|---|---|---|
+| 100 | 100 | 0 | 100 |
+| 90  | 90  | 1 | 90  |
+| 80  | 80  | 1 | 80  |
+| 70  | 70  | 1 | 70  |
+| 60  | 60  | 1 | 60  |
+
+
+1. Cada elemento nuevo tiene prioridad menor que todos los anteriores (prioridad = clave, decrece). Al insertarse, siempre viola la propiedad heap respecto a su padre, así que sube exactamente una rotación hasta quedar en la raíz.
+
+2. Cuando el nodo insertado tiene prioridad mayor o igual que su padre inmediato, es decir, ya está en posición correcta en el árbol desde su posición de hoja. No es necesaria ninguna rotación.
+
+3. `O(log n)` esperado, porque la altura esperada del treap con prioridades aleatorias es `O(log n)`. El peor caso absoluto es la altura del árbol en ese momento, que en el peor caso degenerado puede ser `O(n)`, aunque con prioridades aleatorias ocurre con probabilidad negligible.
+
+4. Una rotación local entre un nodo `u` y su padre `w` mueve `u` hacia arriba sin cambiar el orden inorden. El subárbol central (hijo derecho de `u` en rotación derecha, o hijo izquierdo en rotación izquierda) se reasigna al otro lado de forma que el inorden se preserve exactamente.
+
+5. Porque las prioridades son aleatorias (o pseudoaleatorias). La estructura del árbol depende de la permutación aleatoria inducida por las prioridades, y se puede demostrar que la altura esperada es `O(log n)` para prioridades uniformes independientes. No hay garantía en el peor caso como en AVL o rojo-negro.
+
+### Parte C 
+
+Eliminaciones sobre el treap de Parte A (`{50,30,70,20,40,60,80}` con prio=clave):
+
+| Eliminar | Rotaciones | inorden | isBST | isTreap |
+|---|---|---|---|---|
+| 50 | 1 | [20,30,40,60,70,80] | true | true |
+| 20 | 1 | [30,40,60,70,80] | true | true |
+| 70 | 1 | [30,40,60,80] | true | true |
+
+**Trazado de `remove(50)` con prioridad 50:**
+
+Estado previo (simplificado): `20` es raíz, sus hijos son `30` y la rama izquierda. `50` tiene hijos `40` y `60`.
+
+`trickleDown(nodo(50))`:
+- Hijos: izq=40 (prio 40), der=60 (prio 60). Menor prioridad es 40 (izq).
+- `izq->priority < der->priority` → `rotateRight(u)` → 40 sube, 50 baja a derecha de 40.
+- Ahora nodo(50) tiene solo hijo derecho: 60.
+- Solo hijo derecho → `rotateLeft(u)` → 60 sube, 50 queda como hoja.
+- 50 no tiene hijos. `trickleDown` termina. Total: 1 rotación.
+
+`splice(nodo(50))`: nodo sin hijos, simplemente se desconecta del árbol.
+
+
+1. Porque en un BST común se puede reemplazar el nodo eliminado por su sucesor o predecesor inorden. En un treap, ese reemplazo podría violar la propiedad de heap por prioridad. `trickleDown` baja el nodo hasta convertirlo en hoja, preservando ambas propiedades en todo momento.
+
+2. Para que ese hijo de menor prioridad suba a la posición del nodo actual. Si se rotara con el de mayor prioridad, ese hijo violaría la propiedad heap respecto a su nuevo padre (que tiene prioridad mayor).
+
+3. Se aplica `rotateRight(u)`: el hijo izquierdo sube y `u` queda como hijo derecho de su antiguo hijo.
+
+4. Se aplica `rotateLeft(u)`: el hijo derecho sube y `u` queda como hijo izquierdo.
+
+5. La propiedad BST (los punteros padre/hijo restantes mantienen el orden inorden) y la propiedad heap por prioridad (el nodo eliminado era una hoja, así que sus vecinos no cambian su relación de prioridad). También `size_` debe decrementarse en 1 y los punteros `parent` deben actualizarse correctamente.
+
+
+### Parte D 
+
+| Operación | Resultado Treap | Resultado BST | Propiedad usada |
+|---|---|---|---|
+| `findEQ(40)` | 40 | 40 | BST |
+| `findEQ(35)` | null | null | BST |
+| `lowerBound(35)` | 40 | 40 | BST |
+| `lowerBound(40)` | 40 | 40 | BST |
+| `upperBound(40)` | 50 | 50 | BST |
+| `upperBound(75)` | 80 | 80 | BST |
+1. Porque buscan la clave más pequeña que sea ≥ x (o > x). Solo la propiedad BST garantiza que al ir a la izquierda las claves son menores y a la derecha son mayores, permitiendo la búsqueda binaria.
+
+2. La estructura de búsqueda por clave: `findEQ`, `findLast`, `lowerBound`, `upperBound`, `inorderKeys`.
+
+3. La estructura de prioridades: la raíz tiene la menor prioridad (en esta implementación), y cada padre tiene prioridad menor o igual a sus hijos.
+
+4. Porque para extraer el máximo (o mínimo) de prioridad en un treap habría que recorrer el árbol hasta la hoja de menor prioridad (que no es la raíz). En contraste, un heap binario da `getMax` en `O(1)`. El treap no está optimizado para extracción repetida de prioridades.
+
+5. Cuando se necesitan simultáneamente búsqueda ordenada por clave (`lowerBound`, `upperBound`, rango) y balance probabilístico sin el overhead de AVL o rojo-negro. Es útil en implementaciones de conjuntos ordenados con operaciones mixtas de inserción, eliminación y búsqueda.
+
+
+### Parte E 
+
+Pruebas agregadas en `test_public_week6.cpp` y `test_internal_week6.cpp`:
+
+| Prueba | Cubre | Bug que atraparía |
+|---|---|---|
+| PI-3 | `isBST()` tras insertar | Inserción que viola orden de claves |
+| PI-4 | `isHeapByPriority()` tras insertar | `bubbleUp` incompleto |
+| PI-5 | `isTreap()` tras eliminar | `trickleDown` / `splice` con punteros incorrectos |
+| PI-7 | Treap vacío: `empty()`, `isTreap()` | Inicialización incorrecta de `root_` |
+| PI-8 | Duplicados rechazados | `addNode` que no verifica igualdad |
+| PI-9 | Inorden ordenado tras insertar | Rotación que rompe BST |
+| PI-10 | Eliminación de raíz preserva treap | `trickleDown` que no actualiza `root_` |
+| PI-11 | `size()` consistente tras operaciones mixtas | Contador no decrementado en `splice` |
