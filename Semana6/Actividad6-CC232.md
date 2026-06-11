@@ -285,7 +285,7 @@ out[u->symbol] = prefix.empty() ? "0" : prefix;
 7. Las matemáticas ponderadas se rigen por la distancia de descenso (nivel de profundidad), manteniéndose invariables ante traslaciones horizontales de empate.
 
 ### Bloque 10
-### Parte A 
+#### Parte A 
 
 Secuencia `{(50,50),(30,30),(70,70),(20,20),(40,40),(60,60),(80,80)}`:
 
@@ -327,7 +327,7 @@ Después de 5 inserciones:
 
 5. La propiedad de min-heap por prioridad: todo padre debe tener prioridad menor o igual a sus hijos.
 
-### Parte B 
+#### Parte B 
 
 ```cpp
 std::size_t bubbleUpCount(Node* u) {
@@ -363,7 +363,7 @@ Secuencia `{(100,100),(90,90),(80,80),(70,70),(60,60)}`:
 
 5. Porque las prioridades son aleatorias (o pseudoaleatorias). La estructura del árbol depende de la permutación aleatoria inducida por las prioridades, y se puede demostrar que la altura esperada es `O(log n)` para prioridades uniformes independientes. No hay garantía en el peor caso como en AVL o rojo-negro.
 
-### Parte C 
+#### Parte C 
 
 Eliminaciones sobre el treap de Parte A (`{50,30,70,20,40,60,80}` con prio=clave):
 
@@ -398,7 +398,7 @@ Estado previo (simplificado): `20` es raíz, sus hijos son `30` y la rama izquie
 5. La propiedad BST (los punteros padre/hijo restantes mantienen el orden inorden) y la propiedad heap por prioridad (el nodo eliminado era una hoja, así que sus vecinos no cambian su relación de prioridad). También `size_` debe decrementarse en 1 y los punteros `parent` deben actualizarse correctamente.
 
 
-### Parte D 
+#### Parte D 
 
 | Operación | Resultado Treap | Resultado BST | Propiedad usada |
 |---|---|---|---|
@@ -419,7 +419,7 @@ Estado previo (simplificado): `20` es raíz, sus hijos son `30` y la rama izquie
 5. Cuando se necesitan simultáneamente búsqueda ordenada por clave (`lowerBound`, `upperBound`, rango) y balance probabilístico sin el overhead de AVL o rojo-negro. Es útil en implementaciones de conjuntos ordenados con operaciones mixtas de inserción, eliminación y búsqueda.
 
 
-### Parte E 
+#### Parte E 
 
 Pruebas agregadas en `test_public_week6.cpp` y `test_internal_week6.cpp`:
 
@@ -433,3 +433,37 @@ Pruebas agregadas en `test_public_week6.cpp` y `test_internal_week6.cpp`:
 | PI-9 | Inorden ordenado tras insertar | Rotación que rompe BST |
 | PI-10 | Eliminación de raíz preserva treap | `trickleDown` que no actualiza `root_` |
 | PI-11 | `size()` consistente tras operaciones mixtas | Contador no decrementado en `splice` |
+
+### Bloque 11
+
+```
+BinaryHeap::top()     = 1   (min-heap: menor elemento)
+PQ_ComplHeap::getMax()= 14  (max-heap: mayor elemento)
+BST inorder           = 1 3 4 6 7 8 10 13 14
+Treap inorder         = 1 3 4 6 7 8 10 13 14
+Treap isTreap()       = true
+```
+
+Tabla de comparación
+
+| Estructura | Op principal | Propiedad mantenida | Operación eficiente | Op que no conviene | Evidencia |
+|---|---|---|---|---|---|
+| `BinaryHeap` (S5) | `add` / `remove` | Heap min implícito (arreglo) | `top()` O(1), `add` O(log n) | `lowerBound`, inorden | `top()=1` |
+| `PQ_ComplHeap` (S6) | `insert` / `delMax` | Heap max implícito (arreglo) | `getMax()` O(1), `delMax` O(log n) | `lowerBound`, inorden | `getMax()=14` |
+| `BinarySearchTree` (S5) | `add` / `remove` | BST (inorden ordenado) | `lowerBound` O(h), inorden O(n) | Extraer max repetido | inorden=1..14 |
+| `Treap` (S6) | `add` / `remove` | BST + heap por prioridad | `lowerBound` E[O(log n)], `isTreap` | No es PQ pura | `isTreap=true` |
+
+
+1. Un heap responde eficientemente a "dame el elemento de mayor/menor prioridad" pero no permite búsqueda por clave arbitraria ni recorrido ordenado. Un BST permite búsqueda, `lowerBound`, `upperBound` y recorrido inorden ordenado, pero no garantiza extracción del máximo en O(1).
+
+2. En un BST el recorrido inorden visita claves en orden creciente por construcción. En un heap, los hermanos no tienen relación de orden entre sí; solo se garantiza la relación padre-hijo.
+
+3. `PQ_ComplHeap` implementa la interfaz abstracta `PQ<T>`, usa `std::less` por defecto como max-heap, expone `isHeap()` y `complHeapIsValid`, y tiene funciones auxiliares `constexpr` limpias en lugar de macros. `BinaryHeap` de Semana 5 es un min-heap por defecto sin interfaz abstracta.
+
+4. La propiedad BST sobre claves (para búsqueda ordenada) y la propiedad de heap sobre prioridades (para balanceo probabilístico). Las prioridades aleatorias inducen una distribución uniforme de formas del árbol, garantizando altura esperada `O(log n)`.
+
+5. `PQ_ComplHeap` o `PQ_LeftHeap`. `getMax()` en O(1) y `delMax()` en O(log n).
+
+6. `BinarySearchTree` o `Treap`. Ambos tienen `lowerBound` en O(altura).
+
+7. `Treap`. Combina búsqueda ordenada como BST con altura esperada O(log n) gracias a prioridades aleatorias, sin el overhead de mantener factores de balance explícitos como AVL.
