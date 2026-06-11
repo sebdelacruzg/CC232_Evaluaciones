@@ -22,3 +22,4 @@
 - Validacion del invariante de la columna izquierda antes de aplicar el Un-Swap.
 - Correccion en las aserciones de test_skew_heap.cpp: Se identifico y corrigio un error de interpretacion sobre la regla de insercion en arboles degenerados hacia la izquierda (left spine), basandome en el Sample 3 oficial.
 - Refactorizacion de las pruebas unitarias para validar la secuencia completa de extraccion (minima y maxima) contra los 3 Samples del problema, asegurando el manejo correcto del caso "impossible".
+- Se agregaron los archivos de resultados para la práctica calificada 3
