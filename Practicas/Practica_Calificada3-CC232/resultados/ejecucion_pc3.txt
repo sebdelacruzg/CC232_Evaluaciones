@@ -1,0 +1,21 @@
+Comandos de compilacion y ejecucion:
+cmake -S . -B build
+cmake --build build
+./build/solucion_pc3
+
+Entrada proporcionada por consola (Sample 1 oficial del ICPC 2025):
+7
+2 3
+4 5
+6 7
+0 0
+0 0
+0 0
+0 0
+
+Salida obtenida en consola:
+1 3 2 7 5 6 4
+7 1 5 3 2 6 4
+
+Conclusion:
+La salida de la ejecucion manual coincide exactamente con el "Sample Output 1" esperado.
