@@ -1,0 +1,23 @@
+Comandos de ejecucion de pruebas:
+ctest --test-dir build
+
+Salida de CTest:
+Test project C:/Users/Lenovo/Documents/CC232_Evaluaciones/Practicas/Practica_Calificada3-CC232/build
+    Start 1: TestSkewHeap
+1/1 Test #1: TestSkewHeap ...................   Passed    0.05 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.11 sec
+
+Salida detallada (ejecucion directa ./build/test_skew_heap):
+Iniciando bateria de pruebas completas...
+Sample 1 verificado.
+Sample 2 verificado.
+Sample 3 verificado.
+Caso minimo (N=1) verificado.
+Invariante principal (Left Spine) verificado con prueba propia.
+Todos los casos validados exitosamente.
+
+Conclusion:
+La suite de pruebas fue integrada exitosamente con CTest. Valida tanto los casos oficiales del ICPC como las pruebas propias exigidas por la rubrica.
