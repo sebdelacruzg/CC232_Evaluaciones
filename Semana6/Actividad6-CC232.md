@@ -221,3 +221,23 @@ void heapSort(std::vector<T>& a, Compare comp, bool ascending) {
 5. Para usar solo O(1) memoria extra; crear otro vector gastaría O(n).
 
 
+### Bloque 8 
+```cpp
+bool isValidLeftHeap(Node* u) const {
+  if (!u) return true;
+  if (u->left && comp_(u->value, u->left->value)) return false;
+  if (u->right && comp_(u->value, u->right->value)) return false;
+  if (npl(u->left) < npl(u->right)) return false;
+  if (u->npl != npl(u->right) + 1) return false;
+  return isValidLeftHeap(u->left) && isValidLeftHeap(u->right);
+}
+```
+1. Se unifican la inserción y eliminación delegando todo el control y rebalanceo a la función central merge.
+
+2. Encapsula el nuevo dato en un nodo unitario y lo fusiona con el árbol principal utilizando merge.
+
+3. Elimina la raíz actual y aplica merge directamente entre los subárboles huérfanos izquierdo y derecho.
+
+4. La distancia al nodo incompleto más cercano (NPL) del hijo izquierdo debe ser mayor o igual a la del derecho, sesgando la estructura a la izquierda.
+
+5. Permite fusionar dos colas de prioridad completas en tiempo $O(\log n)$, superando el alto costo $O(n)$ de combinar arreglos enteros.
