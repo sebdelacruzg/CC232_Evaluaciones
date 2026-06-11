@@ -467,3 +467,59 @@ Tabla de comparación
 6. `BinarySearchTree` o `Treap`. Ambos tienen `lowerBound` en O(altura).
 
 7. `Treap`. Combina búsqueda ordenada como BST con altura esperada O(log n) gracias a prioridades aleatorias, sin el overhead de mantener factores de balance explícitos como AVL.
+
+### Bloque 12 
+
+*En `test_public_week6.cpp`:
+
+| ID | Prueba | Bug que atraparía |
+|---|---|---|
+| P1 | `isHeap()` después de cada inserción | `percolateUp` que no restaura heap |
+| P2 | `isHeap()` después de cada eliminación | `percolateDown` incompleto |
+| P3 | `getMax()` no cambia el tamaño | `getMax` que elimina accidentalmente |
+| P4 | `delMax()` decrementa el tamaño en 1 | `pop_back` olvidado |
+| P5 | `heapifyFloyd` produce heap válido | Floyd que procesa nodos en orden incorrecto |
+| P6 | `heapSort` ordena con repetidos | Inestabilidad que pierde elementos repetidos |
+| P7 | `PQ_LeftHeap` isLeftistHeap después de `merge` | `mergeNodes` que no actualiza `npl` |
+| P8 | `PQ_LeftHeap` isLeftistHeap después de `insert` | Inserción como `merge` con nodo mal inicializado |
+| P9 | `PQ_LeftHeap` isLeftistHeap después de `delMax` | `delMax` que no hace `merge` de subárboles |
+| P10 | Huffman: códigos para todos los símbolos con freq>0 | `huffmanMakeForest` que filtra incorrectamente |
+| P11 | Huffman: prefijo libre | Árbol construido sin respetar frecuencias |
+| P12 | Huffman: un solo símbolo tiene código válido | `huffmanCollectCodes` sin caso `prefix.empty()` |
+| P13 | Treap: `isBST()` después de insertar | Rotación que rompe orden de claves |
+| P14 | Treap: `isHeapByPriority()` después de insertar | `bubbleUp` incompleto |
+| P15 | Treap: `isTreap()` después de eliminar | `trickleDown` + `splice` con punteros incorrectos |
+
+En `test_internal_week6.cpp` (adicionales):
+
+| ID | Prueba | Bug que atraparía |
+|---|---|---|
+| PI-1 | `percolateUpCount` retorna >0 para elemento máximo | Implementación que no cuenta intercambios |
+| PI-1b | `percolateUpCount` retorna 0 para elemento mínimo | Count que cuenta sin hacer swap |
+| PI-2 | `percolateDownCount` retorna >0 para raíz mínima | Versión count que no instrumenta correctamente |
+| PI-3 | Heap vacío es válido | `isHeap()` que falla con tamaño 0 |
+| PI-4 | Heap de un elemento | `getMax` que accede fuera de rango |
+| PI-5 | Heap con todos iguales | Comparador estricto que rechaza iguales |
+| PI-6 | `heapSort` descendente | Inversión de comparador incorrecta |
+| PI-7 | Treap vacío pasa todas las validaciones | Constructor que no inicializa `root_` a null |
+| PI-8 | Treap rechaza duplicados y mantiene `size` | `addNode` que no verifica igualdad |
+| PI-9 | Inorden ordenado tras insertar en Treap | Rotación que rompe BST |
+| PI-10 | Eliminación de raíz preserva `isTreap` | `trickleDown` que no actualiza `root_` correctamente |
+| PI-11 | `size()` consistente tras operaciones mixtas | `size_` no decrementado en `splice` |
+| PI-12 | Huffman 1 símbolo: encode/decode round-trip | `huffmanDecode` sin manejo de árbol hoja |
+| PI-13 | `bubbleUpCount` devuelve 0 cuando no hay rotaciones | Contador que siempre incrementa |
+
+Resultado de `ctest`
+
+```
+Test project /home/claude/Libreria_cc232/Semana6/build-debug
+    Start 1: semana6_public
+1/2 Test #1: semana6_public ...................   Passed    0.00 sec
+    Start 2: semana6_internal
+2/2 Test #2: semana6_internal .................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   0.01 sec
+```
+
