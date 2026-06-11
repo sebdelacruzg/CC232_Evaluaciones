@@ -522,4 +522,11 @@ Test project /home/claude/Libreria_cc232/Semana6/build-debug
 
 Total Test time (real) =   0.01 sec
 ```
-
+### Bloque 13 
+* Abstracción (`PQ`): Separar la interfaz lógica de la memoria física permite intercambiar estructuras (arreglos vs. punteros) sin alterar los algoritmos que las usan.
+* Gestión de Heaps: El heap implícito optimiza el uso de caché, pero es rígido al fusionar. El heap izquierdista soluciona esto usando nodos enlazados, logrando fusiones (`merge`) eficientes en O(log n).
+* Eficiencia Algorítmica: El método de Floyd (`heapify`) reduce el costo de construir un heap desde cero de O(n log n) a O(n) operando de abajo hacia arriba. Esta optimización es la base del `heapSort` para ordenar in-situ usando memoria O(1).
+* Aplicaciones Prácticas:
+    * Huffman: Requiere colas de prioridad precisas para extraer subárboles mínimos y construir códigos óptimos sin ambigüedad.
+    * Treap: Hibridación perfecta. Mantiene el orden de búsqueda (BST) y usa prioridades aleatorias (Heap) para auto-balancear el árbol en O(log n) mediante rotaciones locales.
+* Validación: Las pruebas unitarias de invariantes no son un extra; son la única demostración matemática de que las optimizaciones en memoria no han corrompido la estructura de datos.
