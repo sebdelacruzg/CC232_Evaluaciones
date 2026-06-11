@@ -32,22 +32,32 @@ void test_sample_2() {
     
     vector<int> min_p = reconstruir_permutacion(arbol, n, true);
     assert(min_p.empty());
-    cout << "[TEST OK] Sample 2 (impossible) verificado.\n";
+    cout << "Sample 2 verificado.\n";
 }
 
-void test_invariante_columna_izquierda() {
-    vector<NodoSkewHeap> arbol(5); 
-    arbol[1].izquierdo = 2; arbol[2].padre = 1;
-    arbol[2].izquierdo = 3; arbol[3].padre = 2;
-
-    vector<int> candidatos = encontrar_candidatos_insercion(arbol, 1);    
-    assert(!candidatos.empty());
-    assert(candidatos[0] == 3);
+void test_sample_3() {
+    int n = 3;
+    vector<NodoSkewHeap> arbol(n + 1);
+    // Sample Input 3
+    arbol[1].izquierdo = 2; arbol[1].derecho = 0; arbol[2].padre = 1;
+    arbol[2].izquierdo = 3; arbol[2].derecho = 0; arbol[3].padre = 2;
     
-    cout << "Invariante de left spine verificado!\n";
+    vector<int> min_p = reconstruir_permutacion(arbol, n, true);
+    vector<int> max_p = reconstruir_permutacion(arbol, n, false);
+    
+    vector<int> exp_min = {2, 3, 1};
+    vector<int> exp_max = {3, 2, 1};
+    
+    assert(min_p == exp_min);
+    assert(max_p == exp_max);
+    cout << "Sample 3 verificado.\n";
 }
 
 int main() {
-    test_invariante_columna_izquierda();
+    cout << "Iniciando pruebas completas...\n";
+    test_sample_1();
+    test_sample_2();
+    test_sample_3();
+    cout << "Todos los casos validados exitosamente.\n";
     return 0;
 }
