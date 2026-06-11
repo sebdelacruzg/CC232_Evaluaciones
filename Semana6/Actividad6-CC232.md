@@ -188,6 +188,36 @@ for (std::size_t i = by_floyd.size() / 2; i-- > 0;) {
 4. Comienza desde el último nodo interno con al menos un hijo (índice n/2 - 1) y avanza en reversa nivel por nivel hasta la raíz.
 5. No tienen descendientes con quienes compararse ni intercambiar, por lo que cada hoja aislada ya es un sub-heap válido por defecto.
 
+### Bloque 7
 
+```cpp
+template <class T, class Compare>
+void heapSort(std::vector<T>& a, Compare comp, bool ascending) {
+  if (a.size() < 2) return;
+  if (ascending) {
+    complHeapHeapifyFloyd(a, comp);
+    for (std::size_t n = a.size(); n > 1; --n) {
+      std::swap(a[0], a[n - 1]);
+      complHeapPercolateDown(a, n - 1, 0, comp);
+    }
+  } else {
+    auto inv = [&comp](const T& x, const T& y) { return comp(y, x); };
+    complHeapHeapifyFloyd(a, inv);
+    for (std::size_t n = a.size(); n > 1; --n) {
+      std::swap(a[0], a[n - 1]);
+      complHeapPercolateDown(a, n - 1, 0, inv);
+    }
+  }
+}
+```
+1. Reutiliza las casillas finales que el heap libera para almacenar los máximos extraídos.
+
+2. Extrae la raíz iterativamente y reduce el tamaño del heap para ordenar el arreglo.
+
+3. Construir con Floyd cuesta O(n) y las n bajadas (percolateDown) cuestan O(n log n).
+
+4. No. Los intercambios a larga distancia (raíz a hoja final) desordenan elementos idénticos.
+
+5. Para usar solo O(1) memoria extra; crear otro vector gastaría O(n).
 
 
