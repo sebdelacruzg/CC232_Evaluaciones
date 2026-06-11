@@ -24,6 +24,17 @@ void test_sample_1() {
     cout << "Sample 1 verificado.\n";
 }
 
+void test_sample_2() {
+    int n = 2;
+    vector<NodoSkewHeap> arbol(n + 1);
+    // Sample Input 2
+    arbol[1].izquierdo = 0; arbol[1].derecho = 2; arbol[2].padre = 1;
+    
+    vector<int> min_p = reconstruir_permutacion(arbol, n, true);
+    assert(min_p.empty());
+    cout << "[TEST OK] Sample 2 (impossible) verificado.\n";
+}
+
 void test_invariante_columna_izquierda() {
     vector<NodoSkewHeap> arbol(5); 
     arbol[1].izquierdo = 2; arbol[2].padre = 1;
