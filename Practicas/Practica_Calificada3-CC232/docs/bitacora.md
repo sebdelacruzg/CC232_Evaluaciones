@@ -25,3 +25,5 @@
 - Se agregaron los archivos de resultados para la práctica calificada 3
 - Creacion del archivo demos/demo_merge_skew.cpp para aislar la logica de fusion.
 - Implementacion de trazas basicas en consola para verificar el swap incondicional de los punteros durante el merge.
+- Integracion de CTest en CMakeLists.txt.
+- Incorporacion de pruebas propias  (caso minimo N=1 y test asilado del invariante principal).
