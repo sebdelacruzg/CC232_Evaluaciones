@@ -88,7 +88,7 @@ git status
 git log --date=short --pretty=format:"%ad - %h - %an - %s"
 git log --date=short --pretty=format:"%ad" | sort | uniq -c
 git log --graph --oneline --decorate --all
-git log --date=short --name-status --pretty=format:"%ad - %h - %s" -- Semana4 Semana5 Semana6 Practicas practica-calificada3
+git log --date=short --name-status --pretty=format:"%ad - %h - %s" -- Semana4 Semana5 Semana6 Practicas 
 git log --date=short --stat --pretty=format:"%ad - %h - %s"
 ```
 #### Preguntas obligatorias
