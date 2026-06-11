@@ -157,8 +157,10 @@ bool complHeapIsValid(const std::vector<T>& a, std::size_t i, Compare comp) {
 4. Costo O(n), ya que itera linealmente el arreglo una sola vez, realizando como máximo dos comparaciones por nodo.
 
 5. Útil en pruebas para detectar bugs en modificaciones, pero inaceptable en producción porque validar el invariante cuesta O(n), arruinando el beneficio asintótico de las operaciones del heap que cuestan O(log n).
+  
 
 
+### Bloque 6 
 
 
 
