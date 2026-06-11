@@ -241,3 +241,45 @@ bool isValidLeftHeap(Node* u) const {
 4. La distancia al nodo incompleto más cercano (NPL) del hijo izquierdo debe ser mayor o igual a la del derecho, sesgando la estructura a la izquierda.
 
 5. Permite fusionar dos colas de prioridad completas en tiempo $O(\log n)$, superando el alto costo $O(n)$ de combinar arreglos enteros.
+
+### Bloque 9 
+
+| Símbolo | Frecuencia | Código | Longitud |
+|---|---|---|---|
+| A | 5  | 1100 | 4 |
+| B | 5  | 1101 | 4 |
+| C | 10 | 111  | 3 |
+| D | 10 | 10   | 2 |
+| E | 20 | 0    | 1 |
+
+Libre de prefijos: true. Longitud ponderada: 110 bits.
+
+El desempate está definido en `HuffmanLowerFrequencyFirst`:
+```cpp
+// Si frecuencias iguales, desempata por símbolo (mayor símbolo → menor prioridad)
+return a->symbol > b->symbol;
+```
+
+Caso extremo: un solo símbolo `{X:100}`
+
+```
+X -> "0"
+encode("XXX") = "000"
+decode("000") -> "XXX"
+prefijo libre = true
+```
+
+`huffmanCollectCodes` asigna `"0"` cuando `prefix` está vacío (árbol de un solo nodo hoja):
+```cpp
+out[u->symbol] = prefix.empty() ? "0" : prefix;
+```
+
+`huffmanDecode` para árbol de un solo nodo hoja: cada `'0'` en la cadena decodifica ese símbolo.
+
+1. Extrae los nodos terminales de menor acumulación en tiempo sub-lineal impidiendo barridos O(n) continuos sobre la colección general.
+2. Los fragmentos que cargan la estadística más baja (mayor prioridad) de representación global.
+3. Un objeto compuesto que absorbe los flujos de sus elementos base sumando combinadamente sus registros de aparición.
+4. Requiere validación directa (prefix.empty() ? "0" : prefix) ya que al no efectuarse fusiones la raíz simple no posee descensos estructurales de bits.
+5. Anula la ambigüedad en la decodificación continua impidiendo que rutas numéricas de bits se traslapen a lo largo del árbol.
+6. Altereación visual/lateral de elementos empatados generando variaciones asimétricas de códigos equivalentes sin corromper la funcionalidad.
+7. Las matemáticas ponderadas se rigen por la distancia de descenso (nivel de profundidad), manteniéndose invariables ante traslaciones horizontales de empate.
