@@ -162,7 +162,31 @@ bool complHeapIsValid(const std::vector<T>& a, std::size_t i, Compare comp) {
 
 ### Bloque 6 
 
+```cpp 
+std::vector<int> a = {4, 17, 3, 90, 55, 21, 8, 13, 34, 2, 1, 89};
+std::vector<int> by_insert;
+std::size_t swaps_insert = 0;
+for (int x : a) {
+    by_insert.push_back(x);
+    swaps_insert += ods::complHeapPercolateUpCount(by_insert, by_insert.size() - 1, std::less<int>{});
+}
 
+std::vector<int> by_floyd = a;
+std::size_t swaps_floyd = 0;
+for (std::size_t i = by_floyd.size() / 2; i-- > 0;) {
+    swaps_floyd += ods::complHeapPercolateDownCount(by_floyd, by_floyd.size(), i, std::less<int>{});
+}
+```
+| Estrategia | Arreglo Final Resultante | Intercambios Totales | isHeap | Complejidad |
+| :--- | :--- | :--- | :--- | :--- |
+| **A: Inserciones** | `[90, 55, 89, 34, 17, 21, 8, 4, 13, 2, 1, 3]` | 15 | True | O(n log n) |
+| **B: Floyd** | `[90, 55, 89, 34, 17, 21, 8, 13, 4, 2, 1, 3]` | 8 | True | O(n) |
+
+1. El heap representa un orden parcial jerárquico vertical, lo que permite múltiples disposiciones físicas válidas en arreglo para el mismo set de datos.
+2. Cada elemento nuevo entra por el fondo (hoja) y puede trepar toda la altura del árbol, acumulando un costo alto en cada paso.
+3. La mayoría de los nodos se concentran en los niveles inferiores (hojas) y bajan distancias mínimas o nulas, logrando que la sumatoria total sea lineal.
+4. Comienza desde el último nodo interno con al menos un hijo (índice n/2 - 1) y avanza en reversa nivel por nivel hasta la raíz.
+5. No tienen descendientes con quienes compararse ni intercambiar, por lo que cada hoja aislada ya es un sub-heap válido por defecto.
 
 
 
