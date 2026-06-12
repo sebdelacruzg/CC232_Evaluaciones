@@ -23,7 +23,7 @@
 3. Porque cada nueva clave es mayor que la anterior, insertándose siempre como el hijo derecho de la hoja actual, formando una lista recta.
 
 4. 
-``` 
+```
     10
       \
        20
