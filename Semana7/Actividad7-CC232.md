@@ -14,5 +14,30 @@
 6. AVL hereda de BST. RedBlackTree hereda de BinarySearchTree.
 7. Ejecución de 100% (2/2 Passed)
 
+#### Bloque 2
+
+1. Para cualquier nodo, todos los elementos en su subárbol izquierdo son menores y todos los del derecho son mayores.
+
+2. Porque visita el subárbol izquierdo (menores), luego la raíz (el valor intermedio), y luego el subárbol derecho (mayores).
+
+3. Porque cada nueva clave es mayor que la anterior, insertándose siempre como el hijo derecho de la hoja actual, formando una lista recta.
+
+4. 
+``` 
+    10
+      \
+       20
+         \
+          30
+            \
+             40
+               \
+                50
+                  \
+                   60
+                     \
+                      70
+```
+
 
 
