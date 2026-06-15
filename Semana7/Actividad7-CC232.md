@@ -40,4 +40,21 @@
 ```
 
 
+#### Bloque 3
+
+1. Que la diferencia de alturas entre su subtree izquierdo y su subtree derecho sea -1, 0 o 1.
+
+2. Restando la altura del subtree derecho a la altura del subtree izquierdo.
+
+3. La altura de cada nodo en la ruta desde la posición modificada ascendiendo hacia la raíz.
+
+4. Almacena el puntero al padre lógico donde la búsqueda falló, siendo este el punto exacto de inserción.
+
+5. Porque un AVL es esencialmente un BST que simplemente aplica metodos de corrección geométricas post-inserción/borrado.
+
+6. Las rotaciones simples y dobles
+
+7. Porque únicamente reasignan punteros locales preservando que el subtree izquierdo siga siendo menor y el derecho mayor.
+
+
 
